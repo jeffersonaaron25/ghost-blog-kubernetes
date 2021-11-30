@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-blog
+  labels:
+    app: example-blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-blog
+  template:
+    metadata:
+      labels:
+        app: example-blog
+    spec:
+      containers:
+      - name: example-blog
+        image: ghost:4-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 2368
+        resources:
+          requests:
+            cpu: 250m
+            memory: 500Mi
+        env:
+        - name: url
+          value: "http://blog.example.com"
+        - name: admin__url
+          value: "http://blog.example.com"
+        - name: mail__transport
+          value: SMTP
+        - name: mail__options__service
+          value: Mailgun
+        - name: mail__options__auth__user
+          value: "example_user"
+        - name: mail__options__auth__pass
+          value: "example_pass"
+        - name: mail__options__port
+          value: "465"
+        volumeMounts:
+        - mountPath: /var/lib/ghost/content
+          name: content
+      volumes:
+      - name: content
+        persistentVolumeClaim:
+          claimName: blog-content

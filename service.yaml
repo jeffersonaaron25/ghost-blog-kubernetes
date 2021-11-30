@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-blog
+spec:
+  selector:
+    app: example-blog
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 2368

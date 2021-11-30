@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-blog
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "blog-static-ip"
+    networking.gke.io/managed-certificates: "example-blog"
+    kubernetes.io/ingress.class: "gce"
+    #kubernetes.io/ingress.allow-http: "false"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  defaultBackend:
+    service:
+      name: example-blog
+      port:
+        number: 80
